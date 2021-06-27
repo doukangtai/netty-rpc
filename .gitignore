@@ -1,0 +1,15 @@
+/.idea/
+/target/
+/netty-rpc-common/target/
+/netty-rpc-framework/target/
+/netty-rpc-api/target/
+/netty-rpc-test/target/
+/netty-rpc-server/target/
+/netty-rpc-client/target/
+/netty-rpc-common/netty-rpc-common.iml
+/netty-rpc-framework/netty-rpc-framework.iml
+/netty-rpc-api/netty-rpc-api.iml
+/netty-rpc-test/netty-rpc-test.iml
+/netty-rpc-server/netty-rpc-server.iml
+/netty-rpc-client/netty-rpc-client.iml
+/netty-rpc.iml
