@@ -6,6 +6,7 @@ import com.netty.rpc.common.extension.ExtensionLoader;
 import com.netty.rpc.framework.config.RpcServiceConfig;
 import com.netty.rpc.framework.provider.ServiceProvider;
 import com.netty.rpc.framework.registry.ServiceRegistry;
+import com.netty.rpc.framework.remoting.transport.netty.server.NettyRpcServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,14 +50,13 @@ public class ZkServiceProviderImpl implements ServiceProvider {
     @Override
     public void publishService(RpcServiceConfig rpcServiceConfig) {
         addService(rpcServiceConfig);
-        // TODO balabala
         String host = null;
         try {
             host = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             log.error("occur exception when getHostAddress:" + e.getMessage());
         }
-        InetSocketAddress inetSocketAddress = new InetSocketAddress(host, 9999);
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(host, NettyRpcServer.PORT);
         serviceRegistry.registerService(rpcServiceConfig.getRpcServiceName(), inetSocketAddress);
     }
 }
