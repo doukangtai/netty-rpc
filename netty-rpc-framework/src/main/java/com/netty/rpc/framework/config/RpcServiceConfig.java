@@ -20,6 +20,11 @@ public class RpcServiceConfig {
     public RpcServiceConfig() {
     }
 
+    public RpcServiceConfig(String version, String group) {
+        this.version = version;
+        this.group = group;
+    }
+
     public RpcServiceConfig(String version, String group, Object service) {
         this.version = version;
         this.group = group;

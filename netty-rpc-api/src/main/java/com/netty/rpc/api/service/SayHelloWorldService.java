@@ -5,5 +5,5 @@ package com.netty.rpc.api.service;
  * @date 2021/06/27
  */
 public interface SayHelloWorldService {
-    void say(String msg);
+    String say(String msg);
 }

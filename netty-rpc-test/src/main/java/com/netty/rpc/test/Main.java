@@ -1,8 +1,7 @@
 package com.netty.rpc.test;
 
-import com.netty.rpc.framework.compress.gzip.GzipCompress;
-import com.netty.rpc.framework.serialize.Serializer;
-import com.netty.rpc.framework.serialize.kryo.KryoSerializer;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * @author 窦康泰
@@ -10,13 +9,18 @@ import com.netty.rpc.framework.serialize.kryo.KryoSerializer;
  */
 public class Main {
     public static void main(String[] args) {
-        Serializer serializer = new KryoSerializer();
-        byte[] bytes = serializer.serialize(new MyClass("AAA"));
-        GzipCompress gzipCompress = new GzipCompress();
-        byte[] compress = gzipCompress.compress(bytes);
-        byte[] decompress = gzipCompress.decompress(compress);
-        MyClass myClass = serializer.deserialize(decompress, MyClass.class);
-        System.out.println(myClass);
+        MyClass myClass = new MyClass("Zhang San");
+        MyInterface myInterface = (MyInterface) Proxy.newProxyInstance(MyClass.class.getClassLoader(), MyClass.class.getInterfaces(), (proxy, method, args1) -> {
+            Class<?> declaringClass = method.getDeclaringClass();
+            System.out.println(declaringClass);
+            System.out.println(method.getClass());
+            for (Method declaredMethod : declaringClass.getDeclaredMethods()) {
+                System.out.println(declaredMethod.getName());
+            }
+//            method.invoke(myClass, args1);
+            return null;
+        });
+        myInterface.sayName();
     }
 }
 

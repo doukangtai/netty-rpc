@@ -95,7 +95,6 @@ public class CuratorUtils {
         pathChildrenCache.getListenable().addListener((curatorFramework, pathChildrenCacheEvent) -> {
             List<String> serviceAddresses = curatorFramework.getChildren().forPath(path);
             SERVICE_ADDRESS_MAP.put(rpcServiceName, serviceAddresses);
-            serviceAddresses.forEach(System.out::println);
             log.info("[{}] service register address changed", rpcServiceName);
         });
         try {

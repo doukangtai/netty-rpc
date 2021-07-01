@@ -13,4 +13,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Inherited
 public @interface NettyRpcService {
+    String version() default "";
+
+    String group() default "";
 }

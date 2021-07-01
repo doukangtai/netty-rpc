@@ -44,6 +44,7 @@ public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
             out.writeByte(msg.getCompress());
             out.writeInt(msg.getRequestId());
             byte[] body = null;
+            int fullLength = RpcConstants.HEAD_LENGTH;
             if (msg.getMessageType() != RpcConstants.HEARTBEAT_RESPONSE_TYPE && msg.getMessageType() != RpcConstants.HEARTBEAT_REQUEST_TYPE) {
                 Object data = msg.getData();
                 String codecName = SerializationTypeEnum.getName(msg.getCodec());
@@ -52,11 +53,11 @@ public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
                 Compress compress = ExtensionLoader.getExtensionLoader(Compress.class).getExtension(compressName);
                 body = serializer.serialize(data);
                 body = compress.compress(body);
+                fullLength += body.length;
             }
             if (body != null) {
                 out.writeBytes(body);
             }
-            int fullLength = body.length + RpcConstants.HEAD_LENGTH;
             int index = out.writerIndex() - fullLength + RpcConstants.MAGIC_NUMBER.length + 1;
             out.writerIndex(index);
             out.writeInt(fullLength);

@@ -1,0 +1,1 @@
+gzip=com.netty.rpc.framework.compress.gzip.GzipCompress

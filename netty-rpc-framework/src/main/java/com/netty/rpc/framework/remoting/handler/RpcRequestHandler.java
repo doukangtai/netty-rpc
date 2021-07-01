@@ -30,7 +30,7 @@ public class RpcRequestHandler {
             Method declaredMethod = service.getClass().getDeclaredMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());
             declaredMethod.setAccessible(true);
             Object result = declaredMethod.invoke(service, rpcRequest.getParameters());
-            log.info("service:[{}] successful invoke method:[{}], get result:[{}]", rpcRequest.getInterfaceName(), rpcRequest.getMethodName(), result.toString());
+            log.info("service:[{}] successful invoke method:[{}], get result:[{}]", rpcRequest.getInterfaceName(), rpcRequest.getMethodName(), result == null ? null : result.toString());
             return result;
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             throw new RpcException(RpcErrorMessageEnum.SERVICE_INVOCATION_FAILURE, e.getMessage());

@@ -1,0 +1,2 @@
+kyro=com.netty.rpc.framework.serialize.kryo.KryoSerializer
+protostuff=com.netty.rpc.framework.serialize.protostuff.ProtostuffSerializer
