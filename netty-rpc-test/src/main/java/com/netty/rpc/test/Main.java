@@ -1,7 +1,12 @@
 package com.netty.rpc.test;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import com.netty.rpc.framework.loadbalance.LoadBalance;
+import com.netty.rpc.framework.loadbalance.loadbalancer.LFULoadBalance;
+import com.netty.rpc.framework.remoting.dto.RpcRequest;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author 窦康泰
@@ -9,44 +14,29 @@ import java.lang.reflect.Proxy;
  */
 public class Main {
     public static void main(String[] args) {
-        MyClass myClass = new MyClass("Zhang San");
-        MyInterface myInterface = (MyInterface) Proxy.newProxyInstance(MyClass.class.getClassLoader(), MyClass.class.getInterfaces(), (proxy, method, args1) -> {
-            Class<?> declaringClass = method.getDeclaringClass();
-            System.out.println(declaringClass);
-            System.out.println(method.getClass());
-            for (Method declaredMethod : declaringClass.getDeclaredMethods()) {
-                System.out.println(declaredMethod.getName());
-            }
-//            method.invoke(myClass, args1);
-            return null;
-        });
-        myInterface.sayName();
+        LoadBalance loadBalance = new LFULoadBalance();
+//        LoadBalance loadBalance = new RoundRobinLoadBalance();
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        RpcRequest rpcRequest = new RpcRequest(UUID.randomUUID().toString(), "interfaceName1", "", new Object[0], new Class<?>[0], "version1", "group1");
+        for (int i = 0; i < 10; i++) {
+            String address = loadBalance.selectServiceAddress(list, rpcRequest);
+            System.out.println(address);
+        }
+        List<String> list1 = new ArrayList<>();
+        list1.add("4");
+        list1.add("5");
+        list1.add("6");
+        list1.add("7");
+        list1.add("8");
+        System.out.println("-------------------");
+        for (int i = 0; i < 10; i++) {
+            String address = loadBalance.selectServiceAddress(list1, rpcRequest);
+            System.out.println(address);
+        }
     }
-}
-
-class MyClass implements MyInterface {
-    private String name;
-
-    public MyClass() {
-    }
-
-    public MyClass(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void sayName() {
-        System.out.println("say:" + name);
-    }
-
-    @Override
-    public String toString() {
-        return "MyClass{" +
-                "name='" + name + '\'' +
-                '}';
-    }
-}
-
-interface MyInterface {
-    void sayName();
 }
